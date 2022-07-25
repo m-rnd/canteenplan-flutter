@@ -1,11 +1,16 @@
+import 'package:canteenplan/networking/api_service.dart';
+import 'package:canteenplan/repository/canteen_repository.dart';
+import 'package:canteenplan/view/router.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp(router: AppRouter(CanteenRepository(ApiService()))));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final AppRouter router;
+
+  const MyApp({Key? key, required this.router}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -24,7 +29,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      onGenerateRoute: router.generateRoute,
     );
   }
 }
