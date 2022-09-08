@@ -1,7 +1,9 @@
+import '../networking/models/api_meal.dart';
+
 class Meal {
   final int id;
-  final List<String> names;
-  final List<String> notes;
+  final Set<String> names;
+  final Set<String> notes;
   final double price;
   final String category;
 
