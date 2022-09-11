@@ -16,6 +16,28 @@ class MealPlanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget content;
+    if (mealPlan.meals.isEmpty) {
+      content = Row(children: const [
+        Expanded(
+            child: Center(
+                child: Text("Kein Speiseplan für diesen Tag verfügbar.")))
+      ]);
+    } else {
+      content = _buildMealPlan();
+    }
+
+    return Align(
+        alignment: Alignment.topLeft,
+        child: Card(
+            elevation: 0,
+            color: Colors.grey.shade200,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            child: Padding(padding: const EdgeInsets.all(16), child: content)));
+  }
+
+  Widget _buildMealPlan() {
     // group meals by category
     final Map<String, List<Meal>> groupedMeals = {};
     for (var meal in mealPlan.meals) {
@@ -37,31 +59,6 @@ class MealPlanCard extends StatelessWidget {
         }
       });
     }
-
-    return Align(
-        alignment: Alignment.topLeft,
-        child: SizedBox(
-            width: 400,
-            child: Card(
-                elevation: 0,
-                color: generateRandomColor1(),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16)),
-                child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(children: listItems)))));
+    return Column(children: listItems);
   }
-}
-
-Color generateRandomColor1() {
-  // Define all colors you want here
-  const predefinedColors = [
-    Colors.red,
-    Colors.green,
-    Colors.blue,
-    Colors.black,
-    Colors.white
-  ];
-  Random random = Random();
-  return predefinedColors[random.nextInt(predefinedColors.length)];
 }

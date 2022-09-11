@@ -1,5 +1,3 @@
-import '../networking/models/api_meal.dart';
-
 class Meal {
   final int id;
   final Set<String> names;

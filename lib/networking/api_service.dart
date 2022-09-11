@@ -8,7 +8,6 @@ class ApiService {
   dynamic _rawApiCall(String endpoint) async {
     try {
       final response = await get(Uri.parse(baseUrl + endpoint));
-      print(response.body);
       return jsonDecode(response.body);
     } catch (e) {
       return null;

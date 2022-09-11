@@ -7,12 +7,18 @@ part 'daily_meal_plans_state.dart';
 
 class DailyMealPlansCubit extends Cubit<DailyMealPlansState> {
   final MealPlanRepository _repository;
+  final Map<String, List<MealPlan>> _cache = {};
 
   DailyMealPlansCubit(this._repository) : super(DailyMealPlansInitial());
 
-  void getMealPlan(int canteenId, String date) {
-    _repository
-        .getMealPlan(canteenId, date)
-        .then((mealPlan) => {emit(DailyMealPlansLoaded(mealPlan))});
+  void getMealPlans(List<int> canteenIds, String date) {
+    if (_cache.containsKey(date)) {
+      emit(DailyMealPlansLoaded(_cache));
+    } else {}
+    final futures = canteenIds.map((id) => _repository.getMealPlan(id, date));
+    Future.wait(futures).then((List<MealPlan> plans) {
+      _cache.putIfAbsent(date, () => plans);
+      emit(DailyMealPlansLoaded(_cache));
+    });
   }
 }
