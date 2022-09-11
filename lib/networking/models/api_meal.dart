@@ -11,8 +11,8 @@ class ApiMeal {
 
   factory ApiMeal.fromJson(Map<String, dynamic> json) {
     final notes = List<String>.from(json["notes"]);
-    return ApiMeal(json["id"], json["name"], notes, json["prices"]["students"],
-        json["category"]);
+    final price = json["prices"]["students"] ?? 0;
+    return ApiMeal(json["id"], json["name"], notes, price, json["category"]);
   }
 }
 

@@ -1,8 +1,4 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-
-import 'meal.dart';
 
 class Canteen {
   final int id;
