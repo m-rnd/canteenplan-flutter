@@ -1,7 +1,10 @@
 import 'package:canteenplan/cubit/daily_meal_plans_cubit.dart';
+import 'package:canteenplan/models/canteen_color.dart';
+import 'package:canteenplan/view/dialog_add_canteen/add_canteen_dialog.dart';
 import 'package:canteenplan/view/home/widget/mealplan/meal_plan_card.dart';
 import 'package:canteenplan/view/home/widget/top_app_bar/cateen_filter_list.dart';
 import 'package:canteenplan/view/home/widget/top_app_bar/day_tab_list.dart';
+import 'package:canteenplan/view/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -34,6 +37,15 @@ class HomeLayout extends StatelessWidget {
             SliverAppBar(
               pinned: true,
               floating: true,
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () {
+                    Navigator.pushNamed(context, ROUTE_ADD_CANTEEN);
+                  },
+                  splashRadius: 24,
+                )
+              ],
               title: CanteenList(),
               centerTitle: true,
               bottom: DayTabList(
@@ -75,8 +87,12 @@ class HomeLayout extends StatelessWidget {
               (state as DailyMealPlansLoaded).mealPlans[day] ?? [];
 
           return ListView(
-              children:
-                  mealPlans.map((e) => MealPlanCard(mealPlan: e)).toList());
+              children: mealPlans
+                  .map((e) => MealPlanCard(
+                        mealPlan: e,
+                        color: CanteenColor.blue,
+                      ))
+                  .toList());
         }
       },
     );

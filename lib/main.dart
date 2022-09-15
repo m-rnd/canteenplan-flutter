@@ -1,13 +1,16 @@
 import 'package:canteenplan/networking/api_service.dart';
+import 'package:canteenplan/repository/canteen_search_repository.dart';
 import 'package:canteenplan/repository/canteen_repository.dart';
 import 'package:canteenplan/repository/meal_plan_repository.dart';
 import 'package:canteenplan/view/router.dart';
 import 'package:flutter/material.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() {
   final _api = ApiService();
   runApp(MyApp(
-      router: AppRouter(CanteenRepository(_api), MealPlanRepository(_api))));
+      router: AppRouter(CanteenRepository(_api), MealPlanRepository(_api),
+          CanteenSearchRepository(_api))));
 }
 
 class MyApp extends StatelessWidget {
@@ -24,6 +27,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       onGenerateRoute: router.generateRoute,
+      navigatorKey: navigatorKey,
     );
   }
 }
