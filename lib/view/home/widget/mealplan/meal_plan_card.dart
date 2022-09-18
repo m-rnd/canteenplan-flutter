@@ -10,12 +10,10 @@ import 'meal_item.dart';
 
 class MealPlanCard extends StatelessWidget {
   final MealPlan mealPlan;
-  final CanteenColor color;
+  final Color color;
 
   MealPlanCard({Key? key, required this.mealPlan, required this.color})
       : super(key: key);
-
-  final mealCount = Random.secure().nextInt(10);
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +32,10 @@ class MealPlanCard extends StatelessWidget {
         alignment: Alignment.topLeft,
         child: Card(
             elevation: 0,
-            color: color.value.withAlpha(30),
+            color: color.withAlpha(30),
             shape: RoundedRectangleBorder(
                 side: BorderSide(
-                  color: color.value,
+                  color: color,
                 ),
                 borderRadius: BorderRadius.circular(16)),
             child: Padding(padding: const EdgeInsets.all(16), child: content)));

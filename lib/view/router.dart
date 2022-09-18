@@ -42,8 +42,8 @@ class AppRouter {
         return DialogRoute(
             context: navigatorKey.currentContext!,
             builder: (_) => BlocProvider(
-                  create: (context) =>
-                      CanteenSearchCubit(_canteenSearchRepository),
+                  create: (context) => CanteenSearchCubit(
+                      _canteenRepository, _canteenSearchRepository),
                   child: const AddCanteenDialog(),
                 ));
       default:

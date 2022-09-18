@@ -12,12 +12,13 @@ class DailyMealPlansCubit extends Cubit<DailyMealPlansState> {
   DailyMealPlansCubit(this._repository) : super(DailyMealPlansInitial());
 
   void getMealPlans(List<int> canteenIds, String date) {
-    if (_cache.containsKey(date)) {
+    if (_cache.containsKey(date) && _cache[date]?.length == canteenIds.length) {
       emit(DailyMealPlansLoaded(_cache));
     } else {}
     final futures = canteenIds.map((id) => _repository.getMealPlan(id, date));
     Future.wait(futures).then((List<MealPlan> plans) {
-      _cache.putIfAbsent(date, () => plans);
+      _cache[date] = plans;
+
       emit(DailyMealPlansLoaded(_cache));
     });
   }

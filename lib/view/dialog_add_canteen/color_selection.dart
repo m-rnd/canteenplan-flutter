@@ -11,16 +11,17 @@ class ColorSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: CanteenColor.values
-            .map((e) => Padding(
-                padding: const EdgeInsets.only(right: 4),
-                child: ColorCircle(
+    return Align(
+        alignment: Alignment.topLeft,
+        child: Wrap(
+            spacing: 4,
+            runSpacing: 4,
+            children: CanteenColor.values
+                .map((e) => ColorCircle(
                     color: e,
                     active: selectedColor == e,
-                    onClick: onColorClick)))
-            .toList());
+                    onClick: onColorClick))
+                .toList()));
   }
 }
 

@@ -66,6 +66,12 @@ class _AddCanteenDialogState extends State<AddCanteenDialog> {
 
   List<Widget> _buildDialogContent(List<CanteenSearchResult> canteens) {
     return [
+      Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "Name oder Stadt suchen",
+            style: Theme.of(context).textTheme.subtitle1,
+          )),
       Autocomplete(
           optionsBuilder: (TextEditingValue textEditingValue) {
             if (textEditingValue.text.length < 2) {
@@ -120,8 +126,11 @@ class _AddCanteenDialogState extends State<AddCanteenDialog> {
                                 .contains(canteenName.toLowerCase());
                           }).first;
                           BlocProvider.of<CanteenSearchCubit>(context)
-                              .addNewCanteen(Canteen(canteenResult.id,
-                                  canteenResult.name, canteenColor));
+                              .addNewCanteen(Canteen(
+                                  canteenResult.id,
+                                  canteenResult.name,
+                                  canteenColor.value,
+                                  true));
                           Navigator.of(context).pop();
                         },
                   child: const Text("Hinzufügen"))

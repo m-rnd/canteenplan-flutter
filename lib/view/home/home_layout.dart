@@ -1,6 +1,5 @@
+import 'package:canteenplan/cubit/canteen_cubit.dart';
 import 'package:canteenplan/cubit/daily_meal_plans_cubit.dart';
-import 'package:canteenplan/models/canteen_color.dart';
-import 'package:canteenplan/view/dialog_add_canteen/add_canteen_dialog.dart';
 import 'package:canteenplan/view/home/widget/mealplan/meal_plan_card.dart';
 import 'package:canteenplan/view/home/widget/top_app_bar/cateen_filter_list.dart';
 import 'package:canteenplan/view/home/widget/top_app_bar/day_tab_list.dart';
@@ -72,30 +71,41 @@ class HomeLayout extends StatelessWidget {
     final day = DateFormat("yyyy-MM-dd")
         .format(DateTime.now().add(Duration(days: dateOffset)));
 
-    BlocProvider.of<DailyMealPlansCubit>(context)
-        .getMealPlans([63, 64, 65, 66], day);
+    return BlocBuilder<CanteenCubit, CanteenState>(
+        builder: (context, canteenState) {
+      if (canteenState is CanteensLoaded) {
+        final canteens = (canteenState).canteens;
+        final canteenIds = canteens
+            .where((element) => element.isVisible)
+            .map((e) => e.id)
+            .toList();
+        BlocProvider.of<DailyMealPlansCubit>(context)
+            .getMealPlans(canteenIds, day);
+      }
 
-    return BlocBuilder<DailyMealPlansCubit, DailyMealPlansState>(
-      buildWhen: (previous, current) {
+      return BlocBuilder<DailyMealPlansCubit, DailyMealPlansState>(
+          buildWhen: (previous, current) {
         return _widgetRebuildCondition(previous, current, day);
-      },
-      builder: (context, state) {
-        if (state is DailyMealPlansInitial) {
-          return const Center(child: CircularProgressIndicator());
-        } else {
-          final mealPlans =
-              (state as DailyMealPlansLoaded).mealPlans[day] ?? [];
+      }, builder: (context, mealPlanState) {
+        if (mealPlanState is DailyMealPlansLoaded &&
+            canteenState is CanteensLoaded) {
+          final mealPlans = (mealPlanState).mealPlans[day] ?? [];
+          final canteenColorMap = {
+            for (var v in (canteenState).canteens) v.id: v.color
+          };
 
           return ListView(
               children: mealPlans
                   .map((e) => MealPlanCard(
                         mealPlan: e,
-                        color: CanteenColor.blue,
+                        color: canteenColorMap[e.canteenId] ?? Colors.pink,
                       ))
                   .toList());
+        } else {
+          return const Center(child: CircularProgressIndicator());
         }
-      },
-    );
+      });
+    });
   }
 
   bool _widgetRebuildCondition(

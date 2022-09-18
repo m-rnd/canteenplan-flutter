@@ -5,8 +5,8 @@ abstract class CanteenState {}
 
 class CanteenInitial extends CanteenState {}
 
-class CanteenLoaded extends CanteenState {
-  final Canteen canteen;
+class CanteensLoaded extends CanteenState {
+  final List<Canteen> canteens;
 
-  CanteenLoaded(this.canteen);
+  CanteensLoaded(this.canteens);
 }
