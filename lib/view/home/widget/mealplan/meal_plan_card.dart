@@ -28,17 +28,15 @@ class MealPlanCard extends StatelessWidget {
       content = _buildMealPlan();
     }
 
-    return Align(
-        alignment: Alignment.topLeft,
-        child: Card(
-            elevation: 0,
-            color: color.withAlpha(30),
-            shape: RoundedRectangleBorder(
-                side: BorderSide(
-                  color: color,
-                ),
-                borderRadius: BorderRadius.circular(16)),
-            child: Padding(padding: const EdgeInsets.all(16), child: content)));
+    return Card(
+        elevation: 0,
+        color: color.withAlpha(30),
+        shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: color,
+            ),
+            borderRadius: BorderRadius.circular(16)),
+        child: Padding(padding: const EdgeInsets.all(16), child: content));
   }
 
   Widget _buildMealPlan() {

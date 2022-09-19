@@ -35,12 +35,15 @@ class MyApp extends StatelessWidget {
   _getTheme(BuildContext context) {
     final Brightness brightnessValue =
         MediaQuery.of(context).platformBrightness;
-    final backgroundColor =
-        ThemeData(brightness: brightnessValue).scaffoldBackgroundColor;
+    final baseTheme = ThemeData(brightness: brightnessValue);
+    final backgroundColor = baseTheme.scaffoldBackgroundColor;
+
     return ThemeData(
         scaffoldBackgroundColor: backgroundColor,
         brightness: brightnessValue,
         primarySwatch: Colors.blue,
-        appBarTheme: AppBarTheme(backgroundColor: backgroundColor));
+        appBarTheme: AppBarTheme(
+            backgroundColor: backgroundColor,
+            foregroundColor: baseTheme.textTheme.bodySmall?.color));
   }
 }

@@ -18,7 +18,7 @@ class LocalStorageService {
   Future<Map<String, Canteen>> _getCanteensAsMap() async {
     return _prefs.then((prefs) {
       final Map<String, dynamic> canteensJSON =
-          jsonDecode(prefs.getString(CANTEEN_KEY) ?? "[]");
+          jsonDecode(prefs.getString(CANTEEN_KEY) ?? "{}");
 
       return canteensJSON
           .map((id, canteen) => MapEntry(id, Canteen.fromJSON(canteen)));
@@ -32,7 +32,7 @@ class LocalStorageService {
   Future<List<Canteen>> getCanteens() async {
     return _prefs.then((prefs) {
       final Map<String, dynamic> canteensJSON =
-          jsonDecode(prefs.getString(CANTEEN_KEY) ?? "[]");
+          jsonDecode(prefs.getString(CANTEEN_KEY) ?? "{}");
 
       return canteensJSON.values
           .map((canteen) => Canteen.fromJSON(canteen))

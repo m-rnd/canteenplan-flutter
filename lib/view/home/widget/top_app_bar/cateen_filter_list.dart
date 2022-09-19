@@ -20,9 +20,11 @@ class CanteenList extends StatelessWidget {
     return BlocBuilder<CanteenCubit, CanteenState>(builder: (context, state) {
       if (state is CanteensLoaded) {
         final canteens = (state).canteens;
-        return ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(4)),
-            child: Wrap(
+        return SizedBox(
+            height: 48,
+            child: ListView(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
                 children: canteens
                     .map((e) => _canteenButton(
                         e.name,
@@ -45,8 +47,8 @@ class CanteenList extends StatelessWidget {
     final boxColor = isActive ? color.withAlpha(30) : Colors.transparent;
     return InkWell(
       child: Container(
-          clipBehavior: Clip.antiAlias,
           height: 48,
+          width: 150,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
               color: boxColor,
@@ -58,6 +60,8 @@ class CanteenList extends StatelessWidget {
               widthFactor: 1,
               child: Text(
                 name,
+                maxLines: 2,
+                textAlign: TextAlign.center,
                 style:
                     Theme.of(context).textTheme.button?.apply(color: textColor),
               ))),
