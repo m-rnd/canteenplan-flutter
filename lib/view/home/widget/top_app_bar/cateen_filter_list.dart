@@ -11,33 +11,31 @@ var myColor = {
 };
 
 class CanteenList extends StatelessWidget {
-  const CanteenList({Key? key}) : super(key: key);
+  final CanteenState canteenState;
+
+  const CanteenList({Key? key, required this.canteenState}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<CanteenCubit>(context).getCanteens();
-
-    return BlocBuilder<CanteenCubit, CanteenState>(builder: (context, state) {
-      if (state is CanteensLoaded) {
-        final canteens = (state).canteens;
-        return SizedBox(
-            height: 48,
-            child: ListView(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                children: canteens
-                    .map((e) => _canteenButton(
-                        e.name,
-                        e.color,
-                        e.isVisible,
-                        context,
-                        () => BlocProvider.of<CanteenCubit>(context)
-                            .toggleCanteenVisibility(e)))
-                    .toList()));
-      } else {
-        return const Center(child: CircularProgressIndicator());
-      }
-    });
+    if (canteenState is CanteensLoaded) {
+      final canteens = (canteenState as CanteensLoaded).canteens;
+      return SizedBox(
+          height: 48,
+          child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: canteens
+                  .map((e) => _canteenButton(
+                      e.name,
+                      e.color,
+                      e.isVisible,
+                      context,
+                      () => BlocProvider.of<CanteenCubit>(context)
+                          .toggleCanteenVisibility(e)))
+                  .toList()));
+    } else {
+      return const Center(child: CircularProgressIndicator());
+    }
   }
 
   Widget _canteenButton(String name, Color color, bool isActive,
