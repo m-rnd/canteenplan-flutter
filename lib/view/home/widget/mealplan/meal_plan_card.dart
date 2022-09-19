@@ -1,9 +1,6 @@
-import 'dart:math';
-
 import 'package:canteenplan/models/meal_plan.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../models/canteen_color.dart';
 import '../../../../models/meal.dart';
 import 'meal_category_header.dart';
 import 'meal_item.dart';
@@ -12,7 +9,7 @@ class MealPlanCard extends StatelessWidget {
   final MealPlan mealPlan;
   final Color color;
 
-  MealPlanCard({Key? key, required this.mealPlan, required this.color})
+  const MealPlanCard({Key? key, required this.mealPlan, required this.color})
       : super(key: key);
 
   @override

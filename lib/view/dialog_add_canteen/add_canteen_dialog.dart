@@ -1,14 +1,10 @@
-import 'dart:ui';
-
 import 'package:canteenplan/cubit/canteen_search_cubit.dart';
 import 'package:canteenplan/models/canteen.dart';
 import 'package:canteenplan/models/canteen_search_result.dart';
 import 'package:canteenplan/view/dialog_add_canteen/color_selection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../cubit/daily_meal_plans_cubit.dart';
 import '../../models/canteen_color.dart';
 
 class AddCanteenDialog extends StatefulWidget {
@@ -30,8 +26,8 @@ class _AddCanteenDialogState extends State<AddCanteenDialog> {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
         child: Container(
-            constraints: BoxConstraints(maxWidth: 600),
-            margin: EdgeInsets.all(16),
+            constraints: const BoxConstraints(maxWidth: 600),
+            margin: const EdgeInsets.all(16),
             child: BlocBuilder<CanteenSearchCubit, CanteenSearchState>(
                 builder: (context, state) {
               List<Widget> widgets = [];
@@ -43,10 +39,9 @@ class _AddCanteenDialogState extends State<AddCanteenDialog> {
               ));
 
               if (state is CanteenSearchInitial) {
-                widgets.add(CircularProgressIndicator());
+                widgets.add(const CircularProgressIndicator());
               } else {
-                final canteens =
-                    (state as CanteenSearchResultsLoaded).canteens ?? [];
+                final canteens = (state as CanteenSearchResultsLoaded).canteens;
 
                 widgets.addAll(_buildDialogContent(canteens));
               }

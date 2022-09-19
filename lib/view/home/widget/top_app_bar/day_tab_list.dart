@@ -11,7 +11,7 @@ class DayTabList extends StatelessWidget implements PreferredSizeWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext parentContext) {
+  Widget build(BuildContext context) {
     return SizedBox(
         height: height,
         child: PageView.builder(
@@ -19,8 +19,8 @@ class DayTabList extends StatelessWidget implements PreferredSizeWidget {
             itemCount: amountOfDays,
             padEnds: false,
             physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return _dayTab(index, parentContext);
+            itemBuilder: (itemContext, index) {
+              return _dayTab(index, context);
             }));
   }
 

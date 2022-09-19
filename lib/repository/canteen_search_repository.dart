@@ -1,4 +1,3 @@
-import 'package:canteenplan/models/canteen.dart';
 import 'package:canteenplan/models/canteen_search_result.dart';
 import 'package:canteenplan/networking/api_service.dart';
 

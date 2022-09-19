@@ -2,14 +2,6 @@ import 'package:canteenplan/cubit/canteen_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../models/canteen.dart';
-
-var myColor = {
-  "low": Colors.green,
-  "medium": Colors.amberAccent,
-  "high": Colors.red
-};
-
 class CanteenList extends StatelessWidget {
   final CanteenState canteenState;
 
