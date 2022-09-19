@@ -3,16 +3,17 @@ import 'dart:math';
 import 'package:canteenplan/models/meal_plan.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../models/canteen_color.dart';
 import '../../../../models/meal.dart';
 import 'meal_category_header.dart';
 import 'meal_item.dart';
 
 class MealPlanCard extends StatelessWidget {
   final MealPlan mealPlan;
+  final Color color;
 
-  MealPlanCard({Key? key, required this.mealPlan}) : super(key: key);
-
-  final mealCount = Random.secure().nextInt(10);
+  MealPlanCard({Key? key, required this.mealPlan, required this.color})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +28,15 @@ class MealPlanCard extends StatelessWidget {
       content = _buildMealPlan();
     }
 
-    return Align(
-        alignment: Alignment.topLeft,
-        child: Card(
-            elevation: 0,
-            color: Colors.grey.shade200,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            child: Padding(padding: const EdgeInsets.all(16), child: content)));
+    return Card(
+        elevation: 0,
+        color: color.withAlpha(30),
+        shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: color,
+            ),
+            borderRadius: BorderRadius.circular(16)),
+        child: Padding(padding: const EdgeInsets.all(16), child: content));
   }
 
   Widget _buildMealPlan() {

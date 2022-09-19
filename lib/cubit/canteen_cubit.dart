@@ -9,11 +9,19 @@ part 'canteen_state.dart';
 class CanteenCubit extends Cubit<CanteenState> {
   final CanteenRepository _repository;
 
-  CanteenCubit(this._repository) : super(CanteenInitial());
+  CanteenCubit(this._repository) : super(CanteenInitial()) {
+    _repository.getCanteenStream().listen((canteens) {
+      emit(CanteensLoaded(canteens));
+    });
+  }
 
-  void getCanteen(int id) {
+  void getCanteens() {
     _repository
-        .getCanteen(id)
-        .then((canteen) => {emit(CanteenLoaded(canteen))});
+        .getCanteens()
+        .then((canteens) => {emit(CanteensLoaded(canteens))});
+  }
+
+  void toggleCanteenVisibility(Canteen canteen) {
+    _repository.toggleCanteenVisibility(canteen);
   }
 }

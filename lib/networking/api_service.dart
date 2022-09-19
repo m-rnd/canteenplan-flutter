@@ -18,6 +18,10 @@ class ApiService {
     return _rawApiCall("canteens/$id");
   }
 
+  dynamic getCanteens() async {
+    return _rawApiCall("canteens");
+  }
+
   dynamic getMealPlan(int canteenId, String date) async {
     return _rawApiCall("canteens/$canteenId/days/$date/meals");
   }
