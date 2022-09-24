@@ -6,7 +6,7 @@ abstract class DailyMealPlansState {}
 class DailyMealPlansInitial extends DailyMealPlansState {}
 
 class DailyMealPlansLoaded extends DailyMealPlansState {
-  final Map<String, List<MealPlan>> mealPlans;
+  final List<List<MealPlan>> mealPlans;
 
   DailyMealPlansLoaded(this.mealPlans);
 }

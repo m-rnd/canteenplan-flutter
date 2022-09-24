@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:canteenplan/view/home/widget/mealplan/meal_plan_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 import '../../cubit/canteen_cubit.dart';
 import '../../cubit/daily_meal_plans_cubit.dart';
+import '../../models/meal_plan.dart';
 import '../router.dart';
 import '../util/expandable_page_view.dart';
 import 'widget/top_app_bar/cateen_filter_list.dart';
@@ -52,50 +52,56 @@ class HomeDefaultLayout extends StatelessWidget {
               pageController: tabController, amountOfDays: amountOfDays),
         ),
         SliverToBoxAdapter(
-            child: ExpandablePageView(
-                pageController: pageController,
-                children: List.generate(
-                    amountOfDays,
-                    (i) => _buildMealPlansWithDateOffset(
-                        context, i, canteenState))))
+            child: _buildMealPager(context, pageController, canteenState))
       ],
     );
   }
 
-  Widget _buildMealPlansWithDateOffset(
-      BuildContext context, int dateOffset, CanteenState canteenState) {
-    final day = DateFormat("yyyy-MM-dd")
-        .format(DateTime.now().add(Duration(days: dateOffset)));
-
+  Widget _buildMealPager(BuildContext context, PageController pageController,
+      CanteenState canteenState) {
     if (canteenState is CanteensLoaded) {
       final canteens = (canteenState).canteens;
       final canteenIds = canteens
           .where((element) => element.isVisible)
           .map((e) => e.id)
           .toList();
+
       BlocProvider.of<DailyMealPlansCubit>(context)
-          .getMealPlans(canteenIds, day);
+          .getMealPlans(canteenIds, amountOfDays);
+
+      return BlocBuilder<DailyMealPlansCubit, DailyMealPlansState>(
+          builder: (context, mealPlanState) {
+        if (mealPlanState is DailyMealPlansLoaded) {
+          final mealPlans = (mealPlanState).mealPlans;
+          final canteenColorMap = {
+            for (var v in (canteenState).canteens) v.id: v.color
+          };
+
+          return ExpandablePageView(
+              pageController: pageController,
+              children: List.generate(
+                  amountOfDays,
+                  (i) => _buildMealPlansForSingleDay(
+                      context, mealPlans[i], canteenColorMap)));
+        } else {
+          return const Padding(
+              padding: EdgeInsets.all(16),
+              child: Center(child: CircularProgressIndicator()));
+        }
+      });
+    } else {
+      return const Center(child: CircularProgressIndicator());
     }
+  }
 
-    return BlocBuilder<DailyMealPlansCubit, DailyMealPlansState>(
-        builder: (context, mealPlanState) {
-      if (mealPlanState is DailyMealPlansLoaded &&
-          canteenState is CanteensLoaded) {
-        final mealPlans = (mealPlanState).mealPlans[day] ?? [];
-        final canteenColorMap = {
-          for (var v in (canteenState).canteens) v.id: v.color
-        };
-
-        return Column(
-            children: mealPlans
-                .map((e) => MealPlanCard(
-                      mealPlan: e,
-                      color: canteenColorMap[e.canteenId] ?? Colors.pink,
-                    ))
-                .toList());
-      } else {
-        return const Center(child: CircularProgressIndicator());
-      }
-    });
+  Widget _buildMealPlansForSingleDay(BuildContext context,
+      List<MealPlan> mealPlans, Map<int, Color> canteenColorMap) {
+    return Column(
+        children: mealPlans
+            .map((e) => MealPlanCard(
+                  mealPlan: e,
+                  color: canteenColorMap[e.canteenId] ?? Colors.pink,
+                ))
+            .toList());
   }
 }
