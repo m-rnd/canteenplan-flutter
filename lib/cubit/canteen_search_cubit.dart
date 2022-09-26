@@ -16,9 +16,13 @@ class CanteenSearchCubit extends Cubit<CanteenSearchState> {
       : super(CanteenSearchInitial());
 
   void getCanteens() {
-    _searchRepository
-        .getCanteenSearchResults()
-        .then((value) => emit(CanteenSearchResultsLoaded(value)));
+    _searchRepository.getCanteenSearchResults().then((value) {
+      if (value.isEmpty) {
+        emit(CanteenSearchError());
+      } else {
+        emit(CanteenSearchResultsLoaded(value));
+      }
+    });
   }
 
   void addNewCanteen(Canteen c) {

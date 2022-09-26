@@ -62,7 +62,10 @@ class MealPlanRepository {
         cache.update(cacheKey, (value) => mealPlan, ifAbsent: () => mealPlan);
         return mealPlan.toMealPlan();
       }
-      return MealPlan(canteenId, []);
+      final plan = CachedMealPlan(canteenId, DateTime.now(), []);
+      //add the empty plan to the memory cache so the requests do not get repeated
+      cache.update(cacheKey, (value) => plan, ifAbsent: () => plan);
+      return plan.toMealPlan();
     });
   }
 }

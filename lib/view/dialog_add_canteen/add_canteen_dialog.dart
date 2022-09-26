@@ -27,7 +27,7 @@ class _AddCanteenDialogState extends State<AddCanteenDialog> {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
         child: Container(
             constraints: const BoxConstraints(maxWidth: 600),
-            margin: const EdgeInsets.all(16),
+            margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
             child: BlocBuilder<CanteenSearchCubit, CanteenSearchState>(
                 builder: (context, state) {
               List<Widget> widgets = [];
@@ -40,10 +40,25 @@ class _AddCanteenDialogState extends State<AddCanteenDialog> {
 
               if (state is CanteenSearchInitial) {
                 widgets.add(const CircularProgressIndicator());
-              } else {
-                final canteens = (state as CanteenSearchResultsLoaded).canteens;
-
-                widgets.addAll(_buildDialogContent(canteens));
+              } else if (state is CanteenSearchError) {
+                widgets.add(Text(
+                  "Für die Suche nach Mensen benötigst du eine Internetverbindung.",
+                  style: Theme.of(context).textTheme.subtitle1,
+                ));
+                widgets.add(Align(
+                    alignment: Alignment.centerRight,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text("Ok"))
+                        ])));
+              } else if (state is CanteenSearchResultsLoaded) {
+                widgets.addAll(_buildDialogContent(state.canteens));
               }
 
               return Column(
