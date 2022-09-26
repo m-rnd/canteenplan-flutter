@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Canteen plan',
       theme: _getTheme(context),
       onGenerateRoute: router.generateRoute,
       navigatorKey: navigatorKey,
@@ -43,9 +43,10 @@ class MyApp extends StatelessWidget {
     final backgroundColor = baseTheme.scaffoldBackgroundColor;
 
     return ThemeData(
+        fontFamily: "OpenSans",
         scaffoldBackgroundColor: backgroundColor,
         brightness: brightnessValue,
-        primarySwatch: Colors.deepPurple,
+        primarySwatch: Colors.purple,
         appBarTheme: AppBarTheme(
             backgroundColor: backgroundColor,
             foregroundColor: baseTheme.textTheme.bodySmall?.color));

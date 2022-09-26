@@ -1,5 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_http_request.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 class DayTabList extends StatelessWidget implements PreferredSizeWidget {
@@ -26,6 +28,7 @@ class DayTabList extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Widget _dayTab(offset, context) {
+    initializeDateFormatting("de_DE");
     String dayName;
 
     switch (offset) {
@@ -36,7 +39,7 @@ class DayTabList extends StatelessWidget implements PreferredSizeWidget {
         dayName = "Morgen";
         break;
       default:
-        dayName = DateFormat.EEEE()
+        dayName = DateFormat.EEEE("de_DE")
             .format(DateTime.now().add(Duration(days: offset)));
     }
 

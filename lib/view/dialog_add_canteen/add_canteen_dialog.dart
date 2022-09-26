@@ -17,7 +17,7 @@ class AddCanteenDialog extends StatefulWidget {
 class _AddCanteenDialogState extends State<AddCanteenDialog> {
   TextEditingController nameController = TextEditingController();
   String canteenName = '';
-  CanteenColor canteenColor = CanteenColor.pink;
+  CanteenColor canteenColor = CanteenColor.lime;
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<CanteenSearchCubit>(context).getCanteens();

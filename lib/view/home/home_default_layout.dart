@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../cubit/canteen_cubit.dart';
-import '../../cubit/daily_meal_plans_cubit.dart';
+import '../../cubit/meal_plans_cubit.dart';
 import '../../models/meal_plan.dart';
 import '../router.dart';
 import '../util/expandable_page_view.dart';
@@ -106,9 +106,9 @@ class _HomeDefaultLayoutState extends State<HomeDefaultLayout> {
       BlocProvider.of<DailyMealPlansCubit>(context)
           .getMealPlans(canteenIds, widget.amountOfDays);
 
-      return BlocBuilder<DailyMealPlansCubit, DailyMealPlansState>(
+      return BlocBuilder<DailyMealPlansCubit, MealPlansState>(
           builder: (context, mealPlanState) {
-        if (mealPlanState is DailyMealPlansLoaded) {
+        if (mealPlanState is MealPlansLoaded) {
           final mealPlans = (mealPlanState).mealPlans;
           final canteenColorMap = {
             for (var v in (canteenState).canteens) v.id: v.color

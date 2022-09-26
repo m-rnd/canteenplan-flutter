@@ -1,6 +1,6 @@
 import 'package:canteenplan/cubit/canteen_cubit.dart';
 import 'package:canteenplan/cubit/canteen_search_cubit.dart';
-import 'package:canteenplan/cubit/daily_meal_plans_cubit.dart';
+import 'package:canteenplan/cubit/meal_plans_cubit.dart';
 import 'package:canteenplan/main.dart';
 import 'package:canteenplan/repository/canteen_search_repository.dart';
 import 'package:canteenplan/repository/canteen_repository.dart';
