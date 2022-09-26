@@ -29,8 +29,7 @@ class HomeLayout extends StatelessWidget {
         if (canteens.isEmpty) {
           return const HomeEmptyLayout();
         } else {
-          return HomeDefaultLayout(
-              canteenState: canteenState, amountOfDays: amountOfDays);
+          return HomeDefaultLayout(canteenState, amountOfDays);
         }
       } else {
         return const Center(child: CircularProgressIndicator());

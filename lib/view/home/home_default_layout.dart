@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:canteenplan/view/home/widget/day_switcher_arrow.dart';
 import 'package:canteenplan/view/home/widget/mealplan/meal_plan_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,26 +13,62 @@ import '../util/expandable_page_view.dart';
 import 'widget/top_app_bar/cateen_filter_list.dart';
 import 'widget/top_app_bar/day_tab_list.dart';
 
-class HomeDefaultLayout extends StatelessWidget {
+class HomeDefaultLayout extends StatefulWidget {
   final CanteenState canteenState;
   final int amountOfDays;
+  const HomeDefaultLayout(this.canteenState, this.amountOfDays, {super.key});
 
-  const HomeDefaultLayout(
-      {super.key, required this.canteenState, required this.amountOfDays});
+  @override
+  State<HomeDefaultLayout> createState() => _HomeDefaultLayoutState();
+}
 
+class _HomeDefaultLayoutState extends State<HomeDefaultLayout> {
+  int _currentPage = 0;
   @override
   Widget build(BuildContext context) {
     final amountChildren =
-        min(MediaQuery.of(context).size.width ~/ 400, amountOfDays);
+        min(MediaQuery.of(context).size.width ~/ 400, widget.amountOfDays);
 
     final pageController = PageController(viewportFraction: 1 / amountChildren);
     final tabController = PageController(viewportFraction: 1 / amountChildren);
 
+    const pageChangeDuration = Duration(milliseconds: 300);
+
+    List<Widget> content = [
+      _buildMealPager(context, pageController, widget.canteenState)
+    ];
+
+    if (_currentPage > 0) {
+      content.add(Align(
+          alignment: Alignment.centerLeft,
+          child: DaySwitcherArrow(
+              invertNavDirection: true,
+              onClick: () => pageController.animateToPage(
+                  pageController.page!.round() - amountChildren,
+                  duration: pageChangeDuration * amountChildren,
+                  curve: Curves.easeOutCubic))));
+    }
+    if (_currentPage < widget.amountOfDays - amountChildren) {
+      content.add(Align(
+          alignment: Alignment.centerRight,
+          child: DaySwitcherArrow(
+              onClick: () => pageController.animateToPage(
+                  pageController.page!.round() + amountChildren,
+                  duration: pageChangeDuration * amountChildren,
+                  curve: Curves.easeOutCubic))));
+    }
     pageController.addListener(() {
       if (tabController.positions.isNotEmpty) {
         tabController.jumpTo(pageController.offset);
+        final page = pageController.page!.round();
+        if (page != _currentPage) {
+          setState(() {
+            _currentPage = page;
+          });
+        }
       }
     });
+
     return CustomScrollView(
       slivers: [
         SliverAppBar(
@@ -46,13 +83,13 @@ class HomeDefaultLayout extends StatelessWidget {
               splashRadius: 24,
             )
           ],
-          title: CanteenList(canteenState: canteenState),
+          title: CanteenList(canteenState: widget.canteenState),
           centerTitle: true,
           bottom: DayTabList(
-              pageController: tabController, amountOfDays: amountOfDays),
+              pageController: tabController, amountOfDays: widget.amountOfDays),
         ),
         SliverToBoxAdapter(
-            child: _buildMealPager(context, pageController, canteenState))
+            child: Stack(alignment: Alignment.topCenter, children: content))
       ],
     );
   }
@@ -67,7 +104,7 @@ class HomeDefaultLayout extends StatelessWidget {
           .toList();
 
       BlocProvider.of<DailyMealPlansCubit>(context)
-          .getMealPlans(canteenIds, amountOfDays);
+          .getMealPlans(canteenIds, widget.amountOfDays);
 
       return BlocBuilder<DailyMealPlansCubit, DailyMealPlansState>(
           builder: (context, mealPlanState) {
@@ -80,7 +117,7 @@ class HomeDefaultLayout extends StatelessWidget {
           return ExpandablePageView(
               pageController: pageController,
               children: List.generate(
-                  amountOfDays,
+                  widget.amountOfDays,
                   (i) => _buildMealPlansForSingleDay(
                       context, mealPlans[i], canteenColorMap)));
         } else {
