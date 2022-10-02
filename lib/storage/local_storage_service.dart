@@ -5,11 +5,12 @@ import 'package:canteenplan/models/canteen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorageService {
-  late final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  late final Future<SharedPreferences> _prefs;
   StreamController<List<Canteen>> canteenController =
       StreamController<List<Canteen>>.broadcast();
 
   LocalStorageService() {
+    _prefs = SharedPreferences.getInstance();
     getCanteens().then((value) => canteenController.add(value));
   }
 

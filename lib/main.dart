@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   final _api = ApiService();
   final _localStorage = LocalStorageService();
   final _localCache = LocalCacheService();
